@@ -197,3 +197,31 @@ let is_any_column_all_o (g: grid) : bool =
 
 
 
+(* let check_empty_cell (row: cell list) : cell list = 
+  match row with
+  | [] -> failwith "row is hollow."
+  | [cell1; cell2; cell3] -> 
+    if cell1 = Empty then [O; cell2; cell3]
+    else if cell2 = Empty then [cell1; O; cell3]
+    else if cell3 = Empty then [cell1; cell2; O]
+    else [cell1; cell2; cell3]
+  | _ -> failwith "invalid row." *)
+(* but what if there are multiple Empty cells in a row? *)
+
+let replace_empty_cell (cell: cell) (m: cell) : cell =
+  match cell with
+  | Empty -> m
+  | _ -> cell
+
+(* this function will *)
+let check_empty_cell (row: cell list) : cell list list = 
+  match row with
+  | [] -> failwith "row is hollow."
+  | [Empty; cell2; cell3] when cell2 <> Empty && cell3 <> Empty -> [[O; cell2; cell3]]
+  | [cell1; Empty; cell3] when cell1 <> Empty && cell3 <> Empty -> [[cell1; O; cell3]]
+  | [cell1; cell2; Empty] when cell1 <> Empty && cell2 <> Empty -> [[cell1; cell2; O]]
+  | [Empty; Empty; cell3] when cell3 <> Empty -> [[O; Empty; cell3]; [Empty; O; cell3]]
+  | [cell1; Empty; Empty] when cell1 <> Empty -> [[cell1; O; Empty]; [cell1; Empty; O]]
+  | [Empty; Empty; Empty] -> [[Empty; Empty; O]; [Empty; O; Empty]; [O; Empty; Empty]]
+  | _ -> failwith "invalid row." 
+
