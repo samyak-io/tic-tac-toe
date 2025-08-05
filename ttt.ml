@@ -213,7 +213,7 @@ let replace_empty_cell (cell: cell) (m: cell) : cell =
   | Empty -> m
   | _ -> cell
 
-(* this function will *)
+(* this function will return all possible moves for O that are possible to play when one or more cells are empty as lists in a list. *)
 let check_empty_cell (row: cell list) : cell list list = 
   match row with
   | [] -> failwith "row is hollow."
@@ -225,3 +225,21 @@ let check_empty_cell (row: cell list) : cell list list =
   | [Empty; Empty; Empty] -> [[Empty; Empty; O]; [Empty; O; Empty]; [O; Empty; Empty]]
   | _ -> failwith "invalid row." 
 
+(* 
+requires: input is a grid. no rows are hollow.
+ensures: returns true if a winning move is possible, else returns false.
+ *)
+
+(* let is_winning_possible (g: grid) : bool =
+  match g with
+  | [] -> failwith "Hollow Grid."
+  | r1::rest -> 
+    let rec is_winning_row_possible (r: cell list) : bool =
+      if (check_empty_cell r) = [r] then
+        match rest with
+        | [] -> false
+        | r2::rest2 -> is_winning_row_possible r2
+      else
+        true *)
+
+ 
