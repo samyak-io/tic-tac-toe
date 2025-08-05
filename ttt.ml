@@ -212,20 +212,21 @@ let is_winning_grid (g: grid) : bool =
   | _ -> failwith "invalid row." *)
 (* but what if there are multiple Empty cells in a row? *)
 
-let replace_empty_cell (cell: cell) (m: cell) : cell =
+(* let replace_empty_cell (cell: cell) (m: cell) : cell =
   match cell with
   | Empty -> m
-  | _ -> cell
+  | _ -> cell *)
 
 (* this function will return all possible moves for O that are possible to play when one or more cells are empty as lists in a list. *)
-let check_empty_cell (row: cell list) : cell list list = 
+let replace_empty_cell (row: cell list) : cell list list = 
   match row with
-  | [] -> failwith "row is hollow."
+  | [cell1; cell2; cell3] when cell1 <> Empty && cell2 <> Empty && cell3 <> Empty -> [[cell1; cell2; cell3]]
   | [Empty; cell2; cell3] when cell2 <> Empty && cell3 <> Empty -> [[O; cell2; cell3]]
   | [cell1; Empty; cell3] when cell1 <> Empty && cell3 <> Empty -> [[cell1; O; cell3]]
   | [cell1; cell2; Empty] when cell1 <> Empty && cell2 <> Empty -> [[cell1; cell2; O]]
   | [Empty; Empty; cell3] when cell3 <> Empty -> [[O; Empty; cell3]; [Empty; O; cell3]]
   | [cell1; Empty; Empty] when cell1 <> Empty -> [[cell1; O; Empty]; [cell1; Empty; O]]
+  | [Empty; cell2; Empty] when cell2 <> Empty -> [[O; cell2; Empty]; [Empty; cell2; O]]
   | [Empty; Empty; Empty] -> [[Empty; Empty; O]; [Empty; O; Empty]; [O; Empty; Empty]]
   | _ -> failwith "invalid row." 
 
@@ -258,7 +259,7 @@ ensures: returns true if a winning move is possible, else returns false.
 
 
 let create_new_grids_r1 (r1: cell list) (r2: cell list) (r3: cell list) : grid list =
-  match check_empty_cell r1 with
+  match replace_empty_cell r1 with
   | [] -> failwith "Unreachable Case"
   | [a] -> [[a; r2; r3]]
   | [a;b] -> [[a; r2; r3]; [b; r2; r3]]
@@ -266,7 +267,7 @@ let create_new_grids_r1 (r1: cell list) (r2: cell list) (r3: cell list) : grid l
   | _ -> failwith "Unreachable Case.."
 
 let create_new_grids_r2 (r1: cell list) (r2: cell list) (r3: cell list) : grid list =
-  match check_empty_cell r2 with
+  match replace_empty_cell r2 with
   | [] -> failwith "Unreachable Case"
   | [a] -> [[r1; a; r3]]
   | [a;b] -> [[r1; a; r3]; [r1; b; r3]]
@@ -274,7 +275,7 @@ let create_new_grids_r2 (r1: cell list) (r2: cell list) (r3: cell list) : grid l
   | _ -> failwith "Unreachable Case.."
   
 let create_new_grids_r3 (r1: cell list) (r2: cell list) (r3: cell list) : grid list =
-  match check_empty_cell r3 with
+  match replace_empty_cell r3 with
   | [] -> failwith "Unreachable Case"
   | [a] -> [[r1; r2; a]]
   | [a;b] -> [[r1; r2; a]; [r1; r2; b]]
