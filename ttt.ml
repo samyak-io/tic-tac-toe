@@ -2,6 +2,8 @@ type cell = Empty | O | X
 
 type grid = cell list list
 
+(* Assumptions about grid and rows. A grid always contains three rows. Each row always contains three cells. *)
+
 (* 
 requires: a grid that is a list of lists of type cell; and the player, either O or X.
 ensures: 
