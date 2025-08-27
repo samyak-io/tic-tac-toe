@@ -248,6 +248,13 @@ let rec winning_grid (p: player) (gl: grid list) : grid option =
 
 let rec remove_grid (g: grid) (gl: grid list) : grid list =
   ListUtils.filter_rev (fun x -> if x = g then true else false) (gl)
+
+let cell_to_string (c: cell) : string = 
+  match c with
+  | Empty -> " _ "
+  | P X -> " X "
+  | P O -> " O "
+
 end;;
 
 (* take a grid, play all possible moves, if any of it is a winning move, return else return none. *)
@@ -296,20 +303,37 @@ let rec minimax (p: player) (g: grid): move_outcome =
     in 
     try_moves (moves_list)
 
+let rec print_grid (g: grid) : unit = 
+  match g with
+  | [] -> ()
+  | x::xs ->
+    let rec print_row (row: cell list) : unit = 
+      match row with
+      | [] -> Printf.printf "\n"; print_grid xs
+      | [last_element] -> Printf.printf "%s" (TicTacToe.cell_to_string last_element); print_row []
+      | h::t -> Printf.printf "%s|" (TicTacToe.cell_to_string h); print_row t
+    in 
+    print_row x 
+;;
+
 let rec play_best_move (p: player) (g: grid) : grid = 
   match g with
   | [] -> []
   | x::xs -> 
     let outcome = minimax p g in
     match outcome with
-    | Win x -> x 
+    | Win x -> x
     | Draw x -> x
     | Lose -> 
       match TicTacToe.list_all_moves p g with
       | [] -> failwith "No moves found."
       | x::xs -> x (* just returning any (first in this case) playable move *)
 
+let print_best_move (p: player) (g: grid) : unit =
+  let move = play_best_move p g in
+  print_grid move
 
+  
 let empty_board : grid = [
   [Empty; Empty; Empty];
   [Empty; Empty; Empty];
