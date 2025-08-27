@@ -221,8 +221,6 @@ let create_new_grids_r3 (p: player) (r1: cell list) (r2: cell list) (r3: cell li
   | None -> []
   | _ -> failwith "Invalid grid."
 
-
-
 let list_all_moves (p: player) (g: grid) : grid list =
   match g with
   | [row1; row2; row3] ->
