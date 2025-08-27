@@ -334,3 +334,72 @@ defining 'best possible move',
 *)
 
 (* function to check a winning move for z *)
+
+
+
+
+  (* let rec aux (p: player) (g: grid) (gl: grid list) : grid option =
+    match gl with
+    | [] -> None
+    | h::t -> 
+      if TicTacToe.is_winning_grid p h = true then Some h 
+      else aux p g t
+    in 
+    aux p g moves *)
+
+
+(* The goal now is whatever grid I give to the program, it plays the 'best possible move' and returns it *)
+(* 
+
+defining 'best possible move', 
+  1. if a winning move is possible, it is the best possible move, otherwise
+  2. if placing a O in an empty cell in a row (call it move z) leads to a winning move for X, then z is not the best possible move. 
+  3. if placing a O in an empty cell does not lead to an immediate win for X, then for every possible move for X (say every possible move is stored as a new grid G'), check if a winning grid is possible for O, if not then repeat from step 1 for G'. 
+*)
+
+(* function to check a winning move for (either) X (or O) implemented by changing the type and making the previous functions take another argument.*)
+
+(* let rec best_moves (p: player) (g: grid) : grid list =
+  match play_winning_move p g with
+  | Some x -> [x] 
+  | None -> 
+
+    let rec try_next_moves (p: player) (gl: grid list) = 
+      match gl with
+      | [] -> []
+      | x::xs -> 
+        if TicTacToe.is_winning_grid (TicTacToe.opponent p) x then try_next_moves p xs
+        else if TicTacToe.is_winning_grid (p) x then [x]
+        else best_moves p (x)           
+    in try_next_moves (p) (gl1 @ gl2 @ gl3)
+    | _ -> failwith "Invalid row" *)
+
+
+(* let best_moves (p: player) (g: grid) : grid option =
+  let rec bmoves_aux (p: player) (gl: grid list) : grid option =
+  let new_moves = TicTacToe.new_grids_from_grids p gl in
+  (* if there's a winning move possible, play it *)
+    match TicTacToe.winning_grid p new_moves with
+    | Some g -> Some g
+    | None ->
+        (* if not, then in the new moves is opponent winning? *)
+        match TicTacToe.winning_grid (TicTacToe.opponent p) (new_moves) with
+        | None -> 
+          (* no? go deeper and check next moves for p *)
+          let new_moves' = TicTacToe.new_grids_from_grids p new_moves in
+            (match new_moves' with
+            | [] -> None
+            | gls -> bmoves_aux p gls)
+        | Some x -> 
+          (* yes? well then don't play that move, remove that move from the option we're considering. *)
+          let playable_grids = TicTacToe.remove_grid (x) (new_moves) in
+          (* since opponent is also not winning, see if any new moves after that lead to the two things (either you winning or the opponent winning)*)
+          let new_moves' = TicTacToe.new_grids_from_grids p new_moves in
+            (match new_moves' with
+            | [] -> Some []
+            | gls -> bmoves_aux p playable_grids)
+      in 
+        bmoves_aux p [g] *)
+
+(* note to check if a new move is even possible, if the old move is the same as the new move then *)
+      
